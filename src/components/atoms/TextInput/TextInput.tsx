@@ -8,7 +8,7 @@ const TextInput = ({ children, customProps, nativeProps, ...props }: ITextInputP
     return (
         <Container {...props}>
             <InputField
-                testID="input"
+                accessibilityRole="input"
                 selectionColor="#000000"
                 placeholderTextColor="#d6d6d6"
                 autoCapitalize="none"

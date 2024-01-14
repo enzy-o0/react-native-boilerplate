@@ -33,10 +33,10 @@ Default.play = async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const input: HTMLElement = canvas.getByRole('input');
 
-    await userEvent.type(input, '12312312231');
+    await userEvent.type(input, '1231231223');
 
     //TODO value 타입잡기
-    await expect(input.value).toBe('12312312231');
+    await expect(input.value).toBe('1231231223');
     await expect(input.value.length).toBe(10);
 };
 
