@@ -24,3 +24,8 @@ yarn ios
 ## 앱 빌드를 위한 노력
 ### 스토리북 설정
 [React Native Web으로 브라우저에 Storybook 띄우기](https://brash-bonsai-3a3.notion.site/React-Native-Web-b5db761a4cf643cfb41f2d4c1406b914)
+
+### 스토리북 배포
+[공식 문서](https://storybook.js.org/tutorials/intro-to-storybook/react/ko/deploy/ ) 참고해서,  Chromatic + github Actions 사용
+
+
