@@ -10,8 +10,8 @@ import React from 'react';
 import { StyleSheet, useColorScheme } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import BottomTab from './src/BottomTab';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from './src/navigations/bottomTabs/Home';
 
 function App(): React.JSX.Element {
     const isDarkMode = useColorScheme() === 'dark';
@@ -24,7 +24,7 @@ function App(): React.JSX.Element {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name="Home" component={BottomTab} />
+                <Stack.Screen name="Home" component={Home} />
             </Stack.Navigator>
         </NavigationContainer>
     );
