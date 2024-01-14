@@ -31,7 +31,7 @@ Default.args = {
 
 Default.play = async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByTestId<HTMLInputElement>('input');
+    const input: HTMLElement = canvas.getByRole('input');
 
     await userEvent.type(input, '12312312231');
 
