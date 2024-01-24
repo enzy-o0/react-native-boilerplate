@@ -1,12 +1,12 @@
-import {TextInputProps} from 'react-native';
-import {ReactNode} from 'react';
+import { TextInputProps } from 'react-native';
+import { ReactNode } from 'react';
 export type TTextInputCustomProps = {
-  isTextarea?: boolean;
-  innerAdornment?: boolean;
+    isTextarea?: boolean;
+    innerAdornment?: boolean;
 };
 
 export interface ITextInputProps {
-  nativeProps?: TextInputProps;
-  customProps?: TTextInputCustomProps;
-  children?: ReactNode;
+    nativeProps?: TextInputProps;
+    customProps?: TTextInputCustomProps;
+    children?: ReactNode;
 }
