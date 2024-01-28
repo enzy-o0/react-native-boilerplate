@@ -1,8 +1,8 @@
 import React from 'react';
 // import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Home from './Home';
-import Community from './Community';
-import Setting from './Setting';
+import Home from './homeTabStack/Home';
+import Community from './commuityStack/Community';
+import Setting from './settingStack/Setting';
 
 // const Tab = createBottomTabNavigator();
 
