@@ -10,7 +10,7 @@ import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Community from './src/navigations/bottomTab/commuityStack/Community';
+import Community from './src/navigations/bottomTab/communityStack/Community';
 import Setting from './src/navigations/bottomTab/settingStack/Setting';
 import HomeTabStack from './src/navigations/bottomTab/homeTabStack';
 import { NativeBaseProvider } from 'native-base';
