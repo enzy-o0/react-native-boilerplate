@@ -91,16 +91,9 @@
         "@storybook/addon-links": "7.5.3"
     },
     "lint-staged": {
-        "src//*.{ts,tsx}": [
-            "eslint --ext .tsx --ext .ts src/ --fix"
-        ],
-        "./src/": [
-            "prettier --write ."
+        "src/**/*.{ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
         ]
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
     }
 }
