@@ -1,34 +1,45 @@
-# Workflow name
 name: '크로마틱으로 스토리북 배포'
 
-# Event for the workflow
-on: push
+# 이전에는 `on: push` 로 모든 브랜치에서 실행되어 Chromatic 스냅샷을 낭비했습니다.
+# PR과 master 푸시로만 좁힙니다.
+on:
+  pull_request:
+  push:
+    branches: [master]
 
-# List of jobs
+# 같은 브랜치에서 새 푸시가 오면 진행 중인 실행을 취소해 스냅샷을 아낍니다.
+concurrency:
+  group: chromatic-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
-  test:
-    # Operating System
+  chromatic:
     runs-on: ubuntu-latest
-    # Job steps
-    # Job steps
     steps:
-      - uses: actions/checkout@v2 # Update to the latest version of checkout action
+      - uses: actions/checkout@v4
         with:
+          # Chromatic이 베이스라인 비교를 위해 전체 히스토리를 필요로 합니다.
           fetch-depth: 0
+
       - name: Setup Node.js
-        uses: actions/setup-node@v2 # Example of using a different action
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
-      - name: Cache Dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: yarn
+          node-version: 20
+          # 별도 actions/cache 스텝 대신 setup-node 내장 캐시를 사용합니다.
+          # 이전 설정은 yarn 프로젝트인데 npm 캐시 경로(~/.npm)를 캐싱해 사실상 무효였습니다.
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
       - name: Run Chromatic
-        uses: chromaui/action@v1 # Update to the latest version of Chromatic action
+        uses: chromaui/action@v18
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          onlyChanged: true
+          exitZeroOnChanges: true
