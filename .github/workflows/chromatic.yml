@@ -1,11 +1,16 @@
 name: '크로마틱으로 스토리북 배포'
 
-# 이전에는 `on: push` 로 모든 브랜치에서 실행되어 Chromatic 스냅샷을 낭비했습니다.
-# PR과 master 푸시로만 좁힙니다.
+# Phase 1에서 Storybook 7 설정과 의존성을 제거했으므로 이 워크플로는 현재 동작하지 않습니다.
+# Phase 8(Storybook 10 + @storybook/react-native-web-vite 재구축)에서 되살립니다.
+# 그때까지 PR마다 실패로 표시되지 않도록 자동 트리거를 끄고 수동 실행만 남깁니다.
+#
+# 복구 시 되돌릴 설정 (Phase 8):
+# on:
+#   pull_request:
+#   push:
+#     branches: [master]
 on:
-  pull_request:
-  push:
-    branches: [master]
+  workflow_dispatch:
 
 # 같은 브랜치에서 새 푸시가 오면 진행 중인 실행을 취소해 스냅샷을 아낍니다.
 concurrency:

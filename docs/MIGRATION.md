@@ -145,6 +145,7 @@ Expo를 선택한 근거는 [ADR-0002](./adr/0002-expo-over-bare-rn.md). 상세 
 
 ## Phase 8 — Storybook + Chromatic 재구축
 
+- [ ] **`.github/workflows/chromatic.yml` 자동 트리거 복구** — Phase 1에서 Storybook 제거로 동작 불가가 되어 `workflow_dispatch`(수동)로만 남겨둔 상태입니다. 파일 안에 되돌릴 설정이 주석으로 있습니다
 - [ ] Storybook 10.5.7 + **`@storybook/react-native-web-vite`** (10.5.7) — 기존 `@storybook/addon-react-native-web`(0.0.29) + webpack5 조합은 폐기. 이게 SB8+에서의 공식 RN-web 경로이며, 버전 강제 고정(`resolutions`)도 함께 제거됩니다
 - [ ] NativeWind가 Storybook 웹 프리뷰에서 동작하도록 Tailwind 연동 확인 — **여기서 막힐 가능성이 있는 구간입니다.** 막히면 삽질 기록을 그대로 ADR로 남기세요 (2024년에 storybook 7.6→7.5 다운그레이드 이유를 커밋에 남긴 것과 같은 방식)
 - [ ] Chromatic 재연결, 워크플로 액션 버전 v4 계열로 갱신
