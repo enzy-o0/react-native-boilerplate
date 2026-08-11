@@ -37,8 +37,13 @@ local.properties
 # node.js
 #
 node_modules/
-npm-debug.log
-yarn-error.log
+*.log
+
+# Environment
+# .env 계열은 커밋하지 않습니다. 필요한 키 목록은 .env.example 로 관리합니다.
+.env
+.env.*
+!.env.example
 
 # fastlane
 #
@@ -64,3 +69,10 @@ yarn-error.log
 
 # testing
 /coverage
+
+# Storybook
+storybook-static/
+
+# Expo (Phase 1 이후 사용 — 네이티브 폴더는 CNG로 생성하므로 커밋하지 않습니다)
+.expo/
+dist/
