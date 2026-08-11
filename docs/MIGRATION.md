@@ -55,17 +55,23 @@
 > 변경 21건의 상세 내역은 [STACK-CHANGES.md의 Phase 0 섹션](./STACK-CHANGES.md#phase-0--이미-적용된-변경-2026-08-11)에 있습니다.
 > 의존성은 건드리지 않았고, `node_modules` 미설치 상태라 lint·test 실행 검증은 하지 못했습니다.
 
-## Phase 1 — Expo 프로젝트 생성 및 히스토리 병합
+## Phase 1 — Expo 프로젝트 생성 및 히스토리 병합 🔶 진행 중
 
-Expo를 선택한 근거는 [ADR-0002](./adr/0002-expo-over-bare-rn.md).
+Expo를 선택한 근거는 [ADR-0002](./adr/0002-expo-over-bare-rn.md). 상세 변경 내역은 [STACK-CHANGES.md](./STACK-CHANGES.md#phase-1--이미-적용된-변경-2026-08-12).
 
-- [ ] 별도 위치에 `npx create-expo-app@latest` 로 SDK 57 프로젝트 생성 (TypeScript 템플릿)
-- [ ] **기존 레포 히스토리를 유지한 채** 새 프로젝트 파일을 덮어씀 — 레포를 새로 파지 말 것. 2024년 커밋부터 이어지는 히스토리 자체가 "중단했다가 다시 잡고 완주했다"는 서사가 됩니다
-- [ ] 네이티브 폴더(`ios/`, `android/`)는 **커밋하지 않음** — CNG(Continuous Native Generation) 유지, `.gitignore`에 추가
-- [ ] `app.json` / `app.config.ts` 로 앱 식별자·권한 문구·플러그인 선언
-- [ ] `expo-dev-client` 설치 — 네이티브 모듈이 들어가므로 Expo Go로는 실행 불가, 개발 빌드가 필요합니다
-- [ ] 폐기 대상 파일 일괄 삭제 (위 "버립니다" 목록)
-- [ ] 실기기에서 개발 빌드 1회 성공 확인 → **여기까지가 Phase 1 완료 기준**
+- [x] 별도 위치에 `npx create-expo-app@latest` 로 SDK 57 프로젝트 생성 (TypeScript 템플릿)
+- [x] **기존 레포 히스토리를 유지한 채** 새 프로젝트 파일을 덮어씀 — 레포를 새로 파지 말 것. 2024년 커밋부터 이어지는 히스토리 자체가 "중단했다가 다시 잡고 완주했다"는 서사가 됩니다
+- [x] 네이티브 폴더(`ios/`, `android/`)는 **커밋하지 않음** — CNG(Continuous Native Generation) 유지, `.gitignore`에 추가
+- [x] `app.json` 로 앱 식별자 선언 — `Trace` / `trace` / `com.enzy.trace`
+- [x] `expo-dev-client` 설치 — 네이티브 모듈이 들어가므로 Expo Go로는 실행 불가, 개발 빌드가 필요합니다
+- [x] 폐기 대상 파일 일괄 삭제 (위 "버립니다" 목록)
+- [x] Node 버전 고정 — `.nvmrc`에 `22` (metro가 23.x를 거부)
+- [x] `expo-doctor` 20/20 통과, `tsc --noEmit` 통과
+- [ ] **실기기에서 개발 빌드 1회 성공 확인 → 여기까지가 Phase 1 완료 기준**
+  - `npx expo run:ios` 또는 `npx expo run:android` (CNG가 네이티브 폴더를 생성합니다)
+  - Xcode / Android Studio 설정이 필요하며, 이 단계는 사람이 직접 확인해야 합니다
+
+> 권한 문구(`NSLocationWhenInUseUsageDescription` 등)와 위치 관련 config plugin 선언은 실제로 `expo-location`을 도입하는 **Phase 5**에서 추가합니다. 지금 미리 넣으면 쓰지도 않는 권한을 요구하게 됩니다.
 
 ## Phase 2 — 툴체인
 

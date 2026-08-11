@@ -1,18 +1,22 @@
-# React Native 지도 앱 (재구축 진행 중)
+# Trace — 경로 기록 앱 (재구축 진행 중)
 
-> **현재 상태:** 2024년 1월에 만들다 중단한 RN 0.73 보일러플레이트입니다.
-> 2026년 8월부터 최신 스택 위의 **완성된 지도·위치 기반 앱**으로 재구축하고 있습니다.
-> 진행 계획은 아래 로드맵과 [마이그레이션 가이드](./docs/MIGRATION.md)를 참고하세요.
+걸은 경로를 지도에 기록하고 돌아보는 앱입니다.
+
+> **현재 상태:** 2024년 1월에 만들다 중단한 RN 0.73 보일러플레이트를,
+> 2026년 8월부터 Expo SDK 57 기반의 **완성된 앱**으로 재구축하고 있습니다.
+> Phase 0~1 완료, Phase 1의 실기기 빌드 확인이 남아 있습니다.
 
 ## 이 프로젝트가 목표하는 것
 
 RN 프로젝트를 "설정"하는 것이 아니라 **끝까지 만들어 배포하는 것**이 목표입니다.
 
-지도 도메인을 고른 이유는 프론트엔드 난이도가 UI 구성이 아니라 **측정과 판단**에 있기 때문입니다.
+경로 기록을 고른 이유는 프론트엔드 난이도가 UI 구성이 아니라 **측정과 판단**에 있기 때문입니다.
 
-- 마커가 많을 때 클러스터링을 JS에서 할지 네이티브로 넘길지 — 실기기 프레임 측정으로 결정
-- 백그라운드 위치 추적 간격과 배터리 소모의 트레이드오프 — 시간당 소모량 측정으로 결정
+- 1시간 기록 = GPS 좌표 수천 개. 폴리라인을 그대로 그릴지 데시메이션할지 — **실기기 프레임 측정으로 결정**
+- 백그라운드 추적 간격과 배터리 소모의 트레이드오프 — **시간당 소모량 측정으로 결정**
 - 권한 거부 이후의 복구 경로 — iOS는 두 번째 요청이 불가능하므로 설계가 필요
+
+서버 없이 완성 가능해 중단 위험이 낮고, 백그라운드 위치 추적이 **선택 기능이 아니라 제품의 필수 요건**이라 위 측정이 자연스럽게 강제됩니다.
 
 코드 생성이 저렴해진 환경에서 변별점은 "무엇을 만들었나"보다 **"왜 그렇게 했는지 설명할 수 있나"**에 있다고 보고, 판단이 갈린 지점은 전부 [ADR](./docs/adr/)로 남깁니다.
 
@@ -24,19 +28,20 @@ RN 프로젝트를 "설정"하는 것이 아니라 **끝까지 만들어 배포�
 
 ## 스택
 
-| 영역 | 이전 (2024) | 목표 (2026) | 근거 |
-|---|---|---|---|
-| 기반 | RN CLI 0.73.1 | **Expo SDK 57 + CNG** 0.86.2 | [ADR-0002](./docs/adr/0002-expo-over-bare-rn.md) |
-| 스타일 | native-base + styled-components + 자체 theme | **NativeWind 4** | [ADR-0003](./docs/adr/0003-nativewind-over-native-base.md) |
-| 라우팅 | react-navigation 6 (수동 구성) | **expo-router 57** | |
-| 지도 | — | `expo-maps` / `react-native-maps` (미정) | [ADR-0004](./docs/adr/0004-map-and-location-stack.md) |
-| 위치 | — | `expo-location` + `expo-task-manager` | |
-| 서버 상태 | — | TanStack Query 5 | |
-| 클라이언트 상태 | — | Zustand 5 | |
-| 영속화 | — | MMKV 4 / expo-sqlite | |
-| 테스트 | jest 스모크 1개 | RNTL 14 + Maestro E2E | |
-| 문서화 | Storybook 7.6 + Chromatic | **Storybook 10** + Chromatic | |
-| 배포 | Dockerfile APK | **EAS Build / Update** | |
+| 영역 | 이전 (2024) | 목표 (2026) | 상태 | 근거 |
+|---|---|---|---|---|
+| 기반 | RN CLI 0.73.1 | **Expo SDK 57 + CNG** / RN 0.86.2 | ✅ | [ADR-0002](./docs/adr/0002-expo-over-bare-rn.md) |
+| 라우팅 | react-navigation 6 (수동 구성) | **expo-router 57** | ✅ | |
+| 스타일 | native-base + styled-components + 자체 theme | **NativeWind 4** | ⬜ | [ADR-0003](./docs/adr/0003-nativewind-over-native-base.md) |
+| 지도 | — | `expo-maps` / `react-native-maps` (미정) | ⬜ | [ADR-0004](./docs/adr/0004-map-and-location-stack.md) |
+| 위치 | — | `expo-location` + `expo-task-manager` | ⬜ | |
+| 서버 상태 | — | TanStack Query 5 | ⬜ | |
+| 클라이언트 상태 | — | Zustand 5 | ⬜ | |
+| 영속화 | — | MMKV 4 / expo-sqlite | ⬜ | |
+| 테스트 | jest 스모크 1개 | RNTL 14 + Maestro E2E | ⬜ | |
+| 문서화 | Storybook 7.6 + Chromatic | **Storybook 10** + Chromatic | ⬜ | |
+| 배포 | Dockerfile APK | **EAS Build / Update** | ⬜ | |
+| Node | 18 | **22** (`.nvmrc`) | ✅ | |
 
 > `native-base`는 제작사가 유지보수를 중단해 업그레이드 대상이 아니라 **교체 대상**입니다.
 
@@ -49,7 +54,7 @@ RN 프로젝트를 "설정"하는 것이 아니라 **끝까지 만들어 배포�
 | Phase | 내용 | 상태 |
 |---|---|---|
 | 0 | 레포 위생 정리 (`.env` 언트래킹, 빌드 산출물 제거, Actions 버전 갱신, lint-staged glob 수정) | ✅ |
-| 1 | Expo SDK 57 프로젝트 생성 + 히스토리 유지 병합 → **실기기 빌드 성공** | ⬜ |
+| 1 | Expo SDK 57 프로젝트 생성 + 히스토리 유지 병합 → **실기기 빌드 성공** | 🔶 실기기 확인만 남음 |
 | 2 | 툴체인 (ESLint flat config, Prettier 3, husky 9) | ⬜ |
 | 3 | NativeWind 4 전환, 색상 토큰 이전, `TextInput` 재작성 | ⬜ |
 | 4 | expo-router 전환, 지도 도메인에 맞는 화면 구조 재설계 | ⬜ |
@@ -71,14 +76,21 @@ RN 프로젝트를 "설정"하는 것이 아니라 **끝까지 만들어 배포�
 
 ## 실행 방법
 
-> Phase 1 완료 후 이 섹션을 Expo 기준으로 교체합니다. 아래는 재구축 이전(RN 0.73) 기준입니다.
+Node 22가 필요합니다 (`.nvmrc` 참조). metro가 Node 23.x를 거부하므로 버전 매니저 사용을 권합니다.
 
 ```bash
-yarn start          # Metro 시작
-yarn android        # Android 실행
-yarn ios            # iOS 실행
-yarn storybook      # Storybook (웹)
+fnm use          # 또는 nvm use — .nvmrc의 22를 적용
+yarn install
+
+yarn start       # Expo 개발 서버
+yarn ios         # iOS 개발 빌드로 실행
+yarn android     # Android 개발 빌드로 실행
+
+yarn typecheck   # tsc --noEmit
+yarn doctor      # expo-doctor
 ```
+
+네이티브 폴더는 커밋하지 않습니다(CNG). 필요하면 `npx expo prebuild`로 생성합니다.
 
 ## 2024년 작업 기록
 

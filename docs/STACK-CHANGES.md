@@ -12,11 +12,13 @@
 
 | 항목 | 이전 | 이후 | 변경 성격 | 상태 |
 |---|---|---|---|---|
-| react-native | 0.73.1 | 0.86.2 | 마이너 13개 · **0.76에서 New Architecture 기본 전환** | 예정 (P1) |
-| react | 18.2.0 | 19.2.8 | 메이저 1개 | 예정 (P1) |
-| 프로젝트 기반 | `@react-native-community/cli` (bare) | **Expo SDK 57 + CNG** | 기반 교체 | 예정 (P1) |
-| 네이티브 폴더 | `ios/`, `android/` 커밋 | 커밋하지 않음 (config plugin으로 선언) | 관리 방식 전환 | 예정 (P1) |
-| 개발 실행 | Metro + 직접 빌드 | `expo-dev-client` 개발 빌드 | — | 예정 (P1) |
+| react-native | 0.73.1 | **0.86.2** | 마이너 13개 · **0.76에서 New Architecture 기본 전환** | **적용됨 (P1)** |
+| react | 18.2.0 | **19.2.3** | 메이저 1개 | **적용됨 (P1)** |
+| 프로젝트 기반 | `@react-native-community/cli` (bare) | **Expo SDK 57.0.12 + CNG** | 기반 교체 | **적용됨 (P1)** |
+| 네이티브 폴더 | `ios/`, `android/` 커밋 (47파일) | 커밋하지 않음 (config plugin으로 선언) | 관리 방식 전환 | **적용됨 (P1)** |
+| 진입점 | `index.js` + `App.tsx` | `expo-router/entry` | — | **적용됨 (P1)** |
+| 개발 실행 | Metro + 직접 빌드 | `expo-dev-client` 57.0.11 개발 빌드 | — | **적용됨 (P1)** |
+| Node | 18 (`engines: >=18`) | **22** (`.nvmrc`, `engines: >=20`) | metro가 23.x를 거부 | **적용됨 (P1)** |
 
 > **왜 bare가 아니라 Expo인가** — 과거 Expo의 네이티브 제약은 실재했으나 EAS Build + Config Plugins 이후 해소되었고, 현재 RN 공식 문서가 Expo를 권장 시작 경로로 명시합니다. 지도 도메인에 필요한 모듈이 1st-party로 존재합니다 (`expo-maps` 57.0.1). → [ADR-0002](./adr/0002-expo-over-bare-rn.md)
 
@@ -76,7 +78,7 @@
 | eslint | 8.x + `.eslintrc.js` | 10.x + **flat config** (`eslint.config.js`) | 설정 형식 전환 | 예정 (P2) |
 | eslint 설정 | `@react-native/eslint-config` 0.73 | `eslint-config-expo` 57.0.1 | 교체 | 예정 (P2) |
 | prettier | 2.8.8 | 3.9.6 | 메이저 1개 | 예정 (P2) |
-| typescript | 5.0.4 | Expo 템플릿 기준 (**7.x는 보류**) | 신중 적용 | 예정 (P2) |
+| typescript | 5.0.4 | **6.0.3** (Expo 57 템플릿 기준, **7.x는 보류**) | 메이저 1개 | **적용됨 (P1)** |
 | husky | 8.0.0 (`husky install`) | 9.1.7 (`husky init`) | API 변경 | 예정 (P2) |
 | lint-staged | 15.2.0 | 17.3.0 | — | 예정 (P2) |
 | path alias | `babel-plugin-root-import` | `tsconfig` paths (Metro 네이티브 지원) | 플러그인 제거 | 예정 (P2) |
@@ -156,3 +158,73 @@
 `node_modules`가 설치되어 있지 않아 **lint·test·빌드를 실행해 검증하지는 못했습니다.** 변경은 설정 파일과 디렉토리 리네임에 한정되며, 리네임에 따른 import 참조 2곳(`App.tsx`, `src/navigations/bottomTab/index.tsx`)은 수정 후 잔여 참조가 없음을 확인했습니다.
 
 `chromatic.yml`의 Node 18 → 20 변경은 CI에서 1회 확인이 필요합니다.
+
+---
+
+## Phase 1 — 이미 적용된 변경 (2026-08-12)
+
+RN 0.73 bare 프로젝트를 Expo SDK 57 기반으로 재구축했습니다. 커밋 `3ad9cfb` (135파일, +4,407 / −16,259).
+
+### 앱 정체성 확정
+
+| 항목 | 값 |
+|---|---|
+| 컨셉 | **경로 기록 (산책/러닝)** — 걸은 경로를 지도에 기록하고 돌아보기 |
+| name / slug | `Trace` / `trace` |
+| bundle id | `com.enzy.trace` (iOS·Android 공통) |
+| scheme | `trace` |
+
+> 서버 없이 완성 가능하고, 백그라운드 위치 추적이 **제품의 필수 요건**이 되어 Phase 5의 배터리·권한 측정이 자연스럽게 강제되는 점을 근거로 선택했습니다. 이 확정에 따라 [ADR-0004](./adr/0004-map-and-location-stack.md)의 M1을 "마커 클러스터링"에서 **"폴리라인 데시메이션"**으로 재정의했습니다.
+
+### 도입
+
+| 패키지 | 버전 |
+|---|---|
+| expo | 57.0.12 |
+| react-native | 0.86.2 |
+| react / react-dom | 19.2.3 |
+| expo-router | 57.0.12 |
+| expo-dev-client | 57.0.11 |
+| react-native-reanimated | 4.5.1 |
+| react-native-worklets | 0.10.1 |
+| react-native-gesture-handler | 2.32.0 |
+| typescript | 6.0.3 |
+
+### 제거
+
+| 대상 | 사유 |
+|---|---|
+| `ios/`, `android/` (47파일) | CNG로 생성, 커밋 대상 아님 |
+| `Dockerfile` | EAS Build로 대체 |
+| `Gemfile`, `Gemfile.lock`, `.bundle/` | CocoaPods용 Ruby 의존성, CNG에서 불필요 |
+| `App.tsx`, `App.web.tsx`, `index.js`, `index.web.js` | `expo-router/entry` 진입점으로 대체 |
+| `babel.config.js`, `metro.config.js`, `jest.config.js` | Expo 기본 설정 사용 |
+| `.eslintrc.js` | Phase 2에서 flat config로 재작성 |
+| `.storybook/`, `__tests__/` | Phase 7~8에서 재구축 |
+| `.husky/` | **한 번도 활성화된 적 없었음** (아래 참조), Phase 2에서 husky 9로 재설치 |
+| `src/` 구 스택 (16파일) | Phase 3에서 NativeWind로 재작성. 색상 토큰 값은 [MIGRATION.md](./MIGRATION.md)에 보존 |
+| `yarn.lock` | 재생성 (−14,840줄) |
+| `.watchmanconfig`, `app.json` (구 형식) | 대체 |
+
+### 작업 중 발견한 것
+
+**1. husky가 한 번도 동작한 적이 없었습니다.**
+`core.hooksPath`가 미설정이고 `.husky/_/` 디렉토리도 존재하지 않았습니다. `.husky/pre-commit` 파일만 있고 git이 그것을 훅으로 인식한 적이 없습니다. Phase 0에서 고친 `lint-staged` 글롭도 사실 실행될 일이 없던 설정이었습니다. Phase 2에서 `husky init`으로 제대로 설치합니다.
+
+**2. Node 23.3.0이 metro의 engines 조건을 위반합니다.**
+metro 0.84.4가 `^20.19.4 || ^22.13.0 || ^24.3.0 || >= 25.0.0`을 요구하는데 23.3.0은 어느 범위에도 들지 않습니다(홀수 버전은 non-LTS). `.nvmrc`에 `22`를 명시하고 fnm으로 Node 22.23.2를 사용합니다.
+
+**3. Expo 템플릿이 Claude Code 플러그인 설정을 포함합니다.**
+`.claude/settings.json`에 `expo@claude-plugins-official` 플러그인이 활성화되어 있고, `AGENTS.md`는 "코드를 쓰기 전에 v57 버전별 문서를 읽으라"는 한 줄 지시입니다. 템플릿 제공 그대로 유지했습니다.
+
+### 검증 상태
+
+| 항목 | 결과 |
+|---|---|
+| `expo-doctor` | **20/20 통과** |
+| `tsc --noEmit` | **통과** |
+| 실기기 빌드 | ❌ **미확인 — Phase 1 완료 기준 잔여 항목** |
+
+> `tsc`는 처음에 CSS 모듈 관련 오류 2건이 났습니다. Expo가 생성하는 `expo-env.d.ts`가 없어서였고, `expo start`를 1회 실행해 생성한 뒤 통과했습니다. 이 파일은 gitignore 대상입니다.
+
+`yarn install` 시 peer dependency 경고가 다수 출력됩니다. yarn 1이 peer를 자동 설치하지 않아서이며 `expo-doctor`는 통과했습니다. Phase 2에서 패키지 매니저 재검토 시 함께 볼 항목입니다.
