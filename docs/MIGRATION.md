@@ -82,7 +82,19 @@ Expo를 선택한 근거는 [ADR-0002](./adr/0002-expo-over-bare-rn.md).
 근거는 [ADR-0003](./adr/0003-nativewind-over-native-base.md).
 
 - [ ] `nativewind` 4.2.6 + `tailwindcss` 설치, `metro.config.js`·`babel.config.js` 연동
-- [ ] `src/styles/theme.ts`의 **색상 토큰 10개**를 `tailwind.config.js`의 `theme.extend.colors`로 이전 (semantic 네이밍 유지: `main`, `point`, `subText`, `line`, `disable`, `error`, `bg`)
+- [ ] 아래 **색상 토큰 10개**를 `tailwind.config.js`의 `theme.extend.colors`로 이전 (semantic 네이밍 유지)
+
+  ```js
+  // 구 src/styles/theme.ts 에서 보존 (Phase 1에서 파일 삭제됨, 값은 여기 유지)
+  colors: {
+    white:   '#fff',     black: '#1e2022',  disable: '#d6d6d6',
+    error:   '#b50000',  line:  '#e0e0e0',  main:    '#005500',
+    point:   '#d43900',  subText: '#6e6f70', bg:     '#fafafa',
+    blue:    '#1F3A93',
+  }
+  ```
+
+  > 경로 기록 앱 기준으로 재검토가 필요합니다. `main`(#005500, 진녹색)은 지도 위 경로 폴리라인 색으로 쓰기엔 지형색과 충돌할 수 있습니다.
 - [ ] `TextInput` 컴포넌트 재작성 — Compound Component 패턴(`TextInput.TextInputIcon`)은 유지, `styled-components` 제거
 - [ ] **`accessibilityRole="input"` 제거** — RN에 존재하지 않는 role이며, Storybook의 `getByRole`을 통과시키려고 넣은 해킹입니다. 테스트는 `getByPlaceholderText` 또는 `testID`로 대체하고, 접근성은 `accessibilityLabel`로 제대로 부여
 - [ ] 다크모드 토큰 정의 (`dark:` variant) — 지도 앱은 야간 사용 비중이 높아 실사용 근거가 있습니다
