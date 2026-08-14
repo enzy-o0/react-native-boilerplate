@@ -4,12 +4,12 @@
 
 코드 생성 자체는 저렴해진 시대라, 남는 변별점은 **"왜 그 선택을 했는가"**와 **"무엇을 측정하고 판단했는가"**입니다. 여기 있는 문서들은 그 기록입니다.
 
-| # | 제목 | 상태 |
-|---|---|---|
-| [0001](./0001-rebuild-over-incremental-upgrade.md) | 순차 업그레이드 대신 재구축 후 자산 포팅 | 채택 |
-| [0002](./0002-expo-over-bare-rn.md) | Bare RN CLI 대신 Expo SDK 57 + CNG | 채택 |
-| [0003](./0003-nativewind-over-native-base.md) | native-base + styled-components 3중 구조를 NativeWind 4로 통일 | 채택 |
-| [0004](./0004-map-and-location-stack.md) | 지도·위치 스택 선정 | **미결 — 측정 후 확정** |
+| #                                                  | 제목                                                           | 상태                    |
+| -------------------------------------------------- | -------------------------------------------------------------- | ----------------------- |
+| [0001](./0001-rebuild-over-incremental-upgrade.md) | 순차 업그레이드 대신 재구축 후 자산 포팅                       | 채택                    |
+| [0002](./0002-expo-over-bare-rn.md)                | Bare RN CLI 대신 Expo SDK 57 + CNG                             | 채택                    |
+| [0003](./0003-nativewind-over-native-base.md)      | native-base + styled-components 3중 구조를 NativeWind 4로 통일 | 채택                    |
+| [0004](./0004-map-and-location-stack.md)           | 지도·위치 스택 선정                                            | **미결 — 측정 후 확정** |
 
 관련 문서: [마이그레이션 가이드](../MIGRATION.md) · [기술 스택 변경점](../STACK-CHANGES.md)
 

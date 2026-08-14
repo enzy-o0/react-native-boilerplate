@@ -11,26 +11,28 @@
 
 ### 버전 갭
 
-| 패키지 | 현재 | 목표 |
-|---|---|---|
-| react-native | 0.73.1 | 0.86.2 |
-| react | 18.2.0 | 19.2.8 |
-| typescript | 5.0.4 | Expo 템플릿 기준 (7.x는 아래 주의) |
-| storybook | 7.6 | 10.5.7 |
-| eslint | 8 | 10.x + flat config |
-| prettier | 2.8.8 | 3.9.6 |
-| react-navigation | 6 | expo-router 57 |
-| native-base | 3.4 (**유지보수 중단**) | NativeWind 4.2.6 |
+| 패키지           | 현재                    | 목표                               |
+| ---------------- | ----------------------- | ---------------------------------- |
+| react-native     | 0.73.1                  | 0.86.2                             |
+| react            | 18.2.0                  | 19.2.8                             |
+| typescript       | 5.0.4                   | Expo 템플릿 기준 (7.x는 아래 주의) |
+| storybook        | 7.6                     | 10.5.7                             |
+| eslint           | 8                       | 10.x + flat config                 |
+| prettier         | 2.8.8                   | 3.9.6                              |
+| react-navigation | 6                       | expo-router 57                     |
+| native-base      | 3.4 (**유지보수 중단**) | NativeWind 4.2.6                   |
 
 ### 포팅할 자산 / 폐기할 것
 
 **살립니다**
+
 - `src/styles/theme.ts` 의 **색상 토큰** → `tailwind.config` 로 이전
 - `src/components/atoms/TextInput` → NativeWind로 재작성 (Compound Component 패턴 유지)
 - Storybook + Chromatic + GitHub Actions 배포 파이프라인 (개념만; 설정은 전면 재작성)
 - 커밋 메시지에 판단 근거를 남기는 습관 → ADR로 승격
 
 **버립니다**
+
 - `native-base` — 제작사가 유지보수 중단, 후속은 gluestack-ui
 - `styled-components/native` — NativeWind로 통일 ([ADR-0003](./adr/0003-nativewind-over-native-base.md))
 - `react-native-responsive-dimensions` 기반 비례 스케일링 — **1:1 이전 불가**, 아래 3단계 주의사항 참조
@@ -73,15 +75,22 @@ Expo를 선택한 근거는 [ADR-0002](./adr/0002-expo-over-bare-rn.md). 상세 
 
 > 권한 문구(`NSLocationWhenInUseUsageDescription` 등)와 위치 관련 config plugin 선언은 실제로 `expo-location`을 도입하는 **Phase 5**에서 추가합니다. 지금 미리 넣으면 쓰지도 않는 권한을 요구하게 됩니다.
 
-## Phase 2 — 툴체인
+## Phase 2 — 툴체인 ✅ 완료 (2026-08-14)
 
-- [ ] `eslint-config-expo` (57.0.1) 기반 **flat config** (`eslint.config.js`)로 전환 — ESLint 9부터 flat config가 기본, `.eslintrc.js`는 폐기
-- [ ] `prettier` 3.9.6 + `eslint-config-prettier` 10.1.8
-- [ ] 기존 `eslint-plugin-simple-import-sort` 규칙 유지 (import 정렬은 살릴 만한 설정입니다)
-- [ ] `husky` 9.1.7 + `lint-staged` 17.3.0 재설치 — v9는 `husky install`이 아니라 `husky init` 사용
-- [ ] `commitlint` + `@commitlint/config-conventional` 도입 — [CONVENTIONS.md](./CONVENTIONS.md)의 커밋 규칙을 훅으로 강제
-- [ ] TypeScript 버전 결정 — **주의**: 최신은 7.0.2(Go 기반 네이티브 컴파일러)지만 `typescript-eslint`·에디터 플러그인 호환성을 먼저 확인하세요. 리스크를 피하려면 `npx expo install typescript`가 install하는 버전을 그대로 쓰고, TS 7은 별도 브랜치에서 검증 후 도입
-- [ ] `tsconfig.json` path alias 설정 (`babel-plugin-root-import`는 폐기 — Expo/Metro는 `tsconfig` paths를 직접 지원)
+[Expo 공식 ESLint 가이드](https://docs.expo.dev/guides/using-eslint/)의 구성을 따랐습니다. 상세 내역은 [STACK-CHANGES.md](./STACK-CHANGES.md#phase-2--이미-적용된-변경-2026-08-14).
+
+- [x] `eslint-config-expo` (57.0.1) 기반 **flat config** (`eslint.config.js`)로 전환 — ESLint 9부터 flat config가 기본, `.eslintrc.js`는 폐기
+- [x] **ESLint 버전 결정 — 9.39.5로 고정.** 최신은 10.8.1이지만 `eslint-plugin-react`가 아직 10을 지원하지 않아 룰 로딩이 실패합니다
+- [x] `prettier` 3.9.6 + `eslint-plugin-prettier` 5.5.6 + `eslint-config-prettier` 10.1.8
+- [x] Prettier 설정을 Expo 코드베이스에 맞춰 2-space로 조정 (`tabWidth` 4 → 2, `printWidth` 120 → 100)
+- [x] 기존 `eslint-plugin-simple-import-sort` 규칙 유지 (import 정렬은 살릴 만한 설정입니다)
+- [x] `husky` 9.1.7 + `lint-staged` 17.3.0 재설치 — v9는 `husky install`이 아니라 `husky init` 사용
+- [x] `commitlint` + `@commitlint/config-conventional` 도입 — [CONVENTIONS.md](./CONVENTIONS.md)의 커밋 규칙을 훅으로 강제
+- [x] TypeScript 버전 결정 — Expo 템플릿 기준 **6.0.3** 사용. TS 7(Go 기반 네이티브 컴파일러)은 `typescript-eslint`·에디터 플러그인 호환성 확인 후 별도 브랜치에서 도입
+- [x] `tsconfig.json` path alias (`@/*`) — `babel-plugin-root-import` 폐기, Expo/Metro가 `tsconfig` paths를 직접 지원
+- [x] `engines.node`를 `>=22.13`으로 수정 — **Expo SDK 57의 최소 Node는 22.13.x**
+
+> **CI에 lint·typecheck를 붙이는 작업은 Phase 7**에 있습니다. 지금은 로컬 훅만 동작합니다.
 
 ## Phase 3 — 스타일 레이어: NativeWind 4
 
@@ -101,6 +110,7 @@ Expo를 선택한 근거는 [ADR-0002](./adr/0002-expo-over-bare-rn.md). 상세 
   ```
 
   > 경로 기록 앱 기준으로 재검토가 필요합니다. `main`(#005500, 진녹색)은 지도 위 경로 폴리라인 색으로 쓰기엔 지형색과 충돌할 수 있습니다.
+
 - [ ] `TextInput` 컴포넌트 재작성 — Compound Component 패턴(`TextInput.TextInputIcon`)은 유지, `styled-components` 제거
 - [ ] **`accessibilityRole="input"` 제거** — RN에 존재하지 않는 role이며, Storybook의 `getByRole`을 통과시키려고 넣은 해킹입니다. 테스트는 `getByPlaceholderText` 또는 `testID`로 대체하고, 접근성은 `accessibilityLabel`로 제대로 부여
 - [ ] 다크모드 토큰 정의 (`dark:` variant) — 지도 앱은 야간 사용 비중이 높아 실사용 근거가 있습니다

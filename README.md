@@ -4,7 +4,7 @@
 
 > **현재 상태:** 2024년 1월에 만들다 중단한 RN 0.73 보일러플레이트를,
 > 2026년 8월부터 Expo SDK 57 기반의 **완성된 앱**으로 재구축하고 있습니다.
-> Phase 0~1 완료, Phase 1의 실기기 빌드 확인이 남아 있습니다.
+> Phase 0·2 완료, Phase 1은 실기기 빌드 확인만 남았습니다.
 
 ## 이 프로젝트가 목표하는 것
 
@@ -28,20 +28,20 @@ RN 프로젝트를 "설정"하는 것이 아니라 **끝까지 만들어 배포�
 
 ## 스택
 
-| 영역 | 이전 (2024) | 목표 (2026) | 상태 | 근거 |
-|---|---|---|---|---|
-| 기반 | RN CLI 0.73.1 | **Expo SDK 57 + CNG** / RN 0.86.2 | ✅ | [ADR-0002](./docs/adr/0002-expo-over-bare-rn.md) |
-| 라우팅 | react-navigation 6 (수동 구성) | **expo-router 57** | ✅ | |
-| 스타일 | native-base + styled-components + 자체 theme | **NativeWind 4** | ⬜ | [ADR-0003](./docs/adr/0003-nativewind-over-native-base.md) |
-| 지도 | — | `expo-maps` / `react-native-maps` (미정) | ⬜ | [ADR-0004](./docs/adr/0004-map-and-location-stack.md) |
-| 위치 | — | `expo-location` + `expo-task-manager` | ⬜ | |
-| 서버 상태 | — | TanStack Query 5 | ⬜ | |
-| 클라이언트 상태 | — | Zustand 5 | ⬜ | |
-| 영속화 | — | MMKV 4 / expo-sqlite | ⬜ | |
-| 테스트 | jest 스모크 1개 | RNTL 14 + Maestro E2E | ⬜ | |
-| 문서화 | Storybook 7.6 + Chromatic | **Storybook 10** + Chromatic | ⬜ | |
-| 배포 | Dockerfile APK | **EAS Build / Update** | ⬜ | |
-| Node | 18 | **22** (`.nvmrc`) | ✅ | |
+| 영역            | 이전 (2024)                                  | 목표 (2026)                              | 상태 | 근거                                                       |
+| --------------- | -------------------------------------------- | ---------------------------------------- | ---- | ---------------------------------------------------------- |
+| 기반            | RN CLI 0.73.1                                | **Expo SDK 57 + CNG** / RN 0.86.2        | ✅   | [ADR-0002](./docs/adr/0002-expo-over-bare-rn.md)           |
+| 라우팅          | react-navigation 6 (수동 구성)               | **expo-router 57**                       | ✅   |                                                            |
+| 스타일          | native-base + styled-components + 자체 theme | **NativeWind 4**                         | ⬜   | [ADR-0003](./docs/adr/0003-nativewind-over-native-base.md) |
+| 지도            | —                                            | `expo-maps` / `react-native-maps` (미정) | ⬜   | [ADR-0004](./docs/adr/0004-map-and-location-stack.md)      |
+| 위치            | —                                            | `expo-location` + `expo-task-manager`    | ⬜   |                                                            |
+| 서버 상태       | —                                            | TanStack Query 5                         | ⬜   |                                                            |
+| 클라이언트 상태 | —                                            | Zustand 5                                | ⬜   |                                                            |
+| 영속화          | —                                            | MMKV 4 / expo-sqlite                     | ⬜   |                                                            |
+| 테스트          | jest 스모크 1개                              | RNTL 14 + Maestro E2E                    | ⬜   |                                                            |
+| 문서화          | Storybook 7.6 + Chromatic                    | **Storybook 10** + Chromatic             | ⬜   |                                                            |
+| 배포            | Dockerfile APK                               | **EAS Build / Update**                   | ⬜   |                                                            |
+| Node            | 18                                           | **22** (`.nvmrc`)                        | ✅   |                                                            |
 
 > `native-base`는 제작사가 유지보수를 중단해 업그레이드 대상이 아니라 **교체 대상**입니다.
 
@@ -51,19 +51,19 @@ RN 프로젝트를 "설정"하는 것이 아니라 **끝까지 만들어 배포�
 
 2024년 스택과의 항목별 차이는 [docs/STACK-CHANGES.md](./docs/STACK-CHANGES.md), 브랜치·커밋 규칙은 [docs/CONVENTIONS.md](./docs/CONVENTIONS.md)에 있습니다.
 
-| Phase | 내용 | 상태 |
-|---|---|---|
-| 0 | 레포 위생 정리 (`.env` 언트래킹, 빌드 산출물 제거, Actions 버전 갱신, lint-staged glob 수정) | ✅ |
-| 1 | Expo SDK 57 프로젝트 생성 + 히스토리 유지 병합 → **실기기 빌드 성공** | 🔶 실기기 확인만 남음 |
-| 2 | 툴체인 (ESLint flat config, Prettier 3, husky 9) | ⬜ |
-| 3 | NativeWind 4 전환, 색상 토큰 이전, `TextInput` 재작성 | ⬜ |
-| 4 | expo-router 전환, 지도 도메인에 맞는 화면 구조 재설계 | ⬜ |
-| **5** | **지도 코어 — 클러스터링 성능 측정, 배터리 측정, 권한 UX** | ⬜ |
-| 6 | 데이터 레이어 (Query / Zustand / MMKV), 오프라인·에러 처리 | ⬜ |
-| 7 | 테스트 (RNTL, Maestro E2E), CI에 lint·typecheck·test 추가 | ⬜ |
-| 8 | Storybook 10 + Chromatic 재구축, 스토리 5개 이상 | ⬜ |
-| 9 | EAS Build/Update, **설치 가능한 빌드 링크 게시** | ⬜ |
-| 10 | README 재작성 (스크린샷, 측정 결과, 아키텍처) | ⬜ |
+| Phase | 내용                                                                                         | 상태                  |
+| ----- | -------------------------------------------------------------------------------------------- | --------------------- |
+| 0     | 레포 위생 정리 (`.env` 언트래킹, 빌드 산출물 제거, Actions 버전 갱신, lint-staged glob 수정) | ✅                    |
+| 1     | Expo SDK 57 프로젝트 생성 + 히스토리 유지 병합 → **실기기 빌드 성공**                        | 🔶 실기기 확인만 남음 |
+| 2     | 툴체인 (ESLint flat config, Prettier 3, husky 9, commitlint)                                 | ✅                    |
+| 3     | NativeWind 4 전환, 색상 토큰 이전, `TextInput` 재작성                                        | ⬜                    |
+| 4     | expo-router 전환, 지도 도메인에 맞는 화면 구조 재설계                                        | ⬜                    |
+| **5** | **지도 코어 — 클러스터링 성능 측정, 배터리 측정, 권한 UX**                                   | ⬜                    |
+| 6     | 데이터 레이어 (Query / Zustand / MMKV), 오프라인·에러 처리                                   | ⬜                    |
+| 7     | 테스트 (RNTL, Maestro E2E), CI에 lint·typecheck·test 추가                                    | ⬜                    |
+| 8     | Storybook 10 + Chromatic 재구축, 스토리 5개 이상                                             | ⬜                    |
+| 9     | EAS Build/Update, **설치 가능한 빌드 링크 게시**                                             | ⬜                    |
+| 10    | README 재작성 (스크린샷, 측정 결과, 아키텍처)                                                | ⬜                    |
 
 **Phase 5가 본체입니다.** 나머지는 거기 도달하기 위한 기반 공사입니다.
 

@@ -7,14 +7,14 @@
 
 이 레포는 2024년 1월에 `react-native` 0.73.1로 시작해 **2024-01-29 커밋을 마지막으로 중단**되었습니다. 2년 7개월이 지난 현재 목표 스택과의 격차는 다음과 같습니다.
 
-| 패키지 | 현재 | 최신 |
-|---|---|---|
-| react-native | 0.73.1 | 0.86.2 |
-| react | 18.2.0 | 19.2.8 |
-| storybook | 7.6 | 10.5.7 |
-| eslint | 8 | 10.x |
-| react-navigation | 6 | 7.x / expo-router |
-| native-base | 3.4 | **유지보수 중단** |
+| 패키지           | 현재   | 최신              |
+| ---------------- | ------ | ----------------- |
+| react-native     | 0.73.1 | 0.86.2            |
+| react            | 18.2.0 | 19.2.8            |
+| storybook        | 7.6    | 10.5.7            |
+| eslint           | 8      | 10.x              |
+| react-navigation | 6      | 7.x / expo-router |
+| native-base      | 3.4    | **유지보수 중단** |
 
 특히 `react-native` 0.73 → 0.86 사이에는 **0.76에서 New Architecture(Fabric/TurboModules)가 기본값으로 전환**되는 단절이 있습니다. 마이너 13개를 순차로 넘는 동안 네이티브 빌드가 반복적으로 깨집니다.
 
