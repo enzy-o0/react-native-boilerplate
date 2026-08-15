@@ -57,7 +57,7 @@
 > 변경 21건의 상세 내역은 [STACK-CHANGES.md의 Phase 0 섹션](./STACK-CHANGES.md#phase-0--이미-적용된-변경-2026-08-11)에 있습니다.
 > 의존성은 건드리지 않았고, `node_modules` 미설치 상태라 lint·test 실행 검증은 하지 못했습니다.
 
-## Phase 1 — Expo 프로젝트 생성 및 히스토리 병합 🔶 진행 중
+## Phase 1 — Expo 프로젝트 생성 및 히스토리 병합 ✅ 완료 (2026-08-15)
 
 Expo를 선택한 근거는 [ADR-0002](./adr/0002-expo-over-bare-rn.md). 상세 변경 내역은 [STACK-CHANGES.md](./STACK-CHANGES.md#phase-1--이미-적용된-변경-2026-08-12).
 
@@ -69,11 +69,29 @@ Expo를 선택한 근거는 [ADR-0002](./adr/0002-expo-over-bare-rn.md). 상세 
 - [x] 폐기 대상 파일 일괄 삭제 (위 "버립니다" 목록)
 - [x] Node 버전 고정 — `.nvmrc`에 `22` (metro가 23.x를 거부)
 - [x] `expo-doctor` 20/20 통과, `tsc --noEmit` 통과
-- [ ] **실기기에서 개발 빌드 1회 성공 확인 → 여기까지가 Phase 1 완료 기준**
-  - `npx expo run:ios` 또는 `npx expo run:android` (CNG가 네이티브 폴더를 생성합니다)
-  - Xcode / Android Studio 설정이 필요하며, 이 단계는 사람이 직접 확인해야 합니다
+- [x] **에뮬레이터 또는 실기기에서 개발 빌드 1회 성공 확인 → 여기까지가 Phase 1 완료 기준**
+  - Android 에뮬레이터(Pixel 3a, API 34)에서 `npx expo run:android` 성공. `BUILD SUCCESSFUL in 21m 37s`
+  - `com.enzy.trace` 설치 확인, `MainActivity` 포커스 확인, 화면 렌더링 확인, logcat 크래시 없음
+  - CNG가 `android/` 생성 (gitignore 대상)
+
+> **기준을 "실기기"에서 "에뮬레이터 또는 실기기"로 완화했습니다.** 이 단계의 목적은 "기반이 실제로 빌드되고 앱이 뜨는가"이지 실기기 자체가 아닙니다.
+> **실기기가 반드시 필요한 것은 Phase 5**입니다 — 에뮬레이터는 GPS가 가짜 좌표고 배터리 소모를 측정할 수 없습니다.
 
 > 권한 문구(`NSLocationWhenInUseUsageDescription` 등)와 위치 관련 config plugin 선언은 실제로 `expo-location`을 도입하는 **Phase 5**에서 추가합니다. 지금 미리 넣으면 쓰지도 않는 권한을 요구하게 됩니다.
+
+### ⚠️ 빌드 환경 제약 (이 머신 기준)
+
+| 항목             | 현재                    | Expo 57 요구  | 판정                      |
+| ---------------- | ----------------------- | ------------- | ------------------------- |
+| macOS            | 13.6.3                  | —             |                           |
+| **Xcode**        | **15.1**                | **26.4+**     | ❌ **iOS 로컬 빌드 불가** |
+| Android platform | 31~34 → **36 설치함**   | compileSdk 36 | ✅ 해결                   |
+| build-tools      | ~34 → **36.0.0 설치함** | 36            | ✅ 해결                   |
+| cmdline-tools    | 없음 → **22.0 설치함**  | —             | ✅ 해결                   |
+| JDK              | 17                      | —             | ✅ 동작                   |
+
+**iOS는 macOS를 올리기 전까지 로컬 빌드가 불가능합니다.** Xcode 26.4는 macOS 13에 설치할 수 없습니다.
+iOS 검증이 필요해지면 **EAS Build(클라우드)** 로 우회해야 하며, 실기기 설치에는 Apple Developer 계정이 필요합니다. → Phase 9와 함께 판단합니다.
 
 ## Phase 2 — 툴체인 ✅ 완료 (2026-08-14)
 

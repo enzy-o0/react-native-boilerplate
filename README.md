@@ -4,7 +4,10 @@
 
 > **현재 상태:** 2024년 1월에 만들다 중단한 RN 0.73 보일러플레이트를,
 > 2026년 8월부터 Expo SDK 57 기반의 **완성된 앱**으로 재구축하고 있습니다.
-> Phase 0·2 완료, Phase 1은 실기기 빌드 확인만 남았습니다.
+> Phase 0~2 완료 — Android 에뮬레이터에서 빌드·실행을 확인했습니다. 다음은 Phase 3(NativeWind).
+>
+> iOS는 이 머신의 Xcode 15.1이 Expo 57의 요구(26.4+)에 못 미쳐 로컬 빌드가 불가능합니다.
+> 자세한 내용은 [MIGRATION.md의 빌드 환경 제약](./docs/MIGRATION.md#️-빌드-환경-제약-이-머신-기준).
 
 ## 이 프로젝트가 목표하는 것
 
@@ -51,19 +54,19 @@ RN 프로젝트를 "설정"하는 것이 아니라 **끝까지 만들어 배포�
 
 2024년 스택과의 항목별 차이는 [docs/STACK-CHANGES.md](./docs/STACK-CHANGES.md), 브랜치·커밋 규칙은 [docs/CONVENTIONS.md](./docs/CONVENTIONS.md)에 있습니다.
 
-| Phase | 내용                                                                                         | 상태                  |
-| ----- | -------------------------------------------------------------------------------------------- | --------------------- |
-| 0     | 레포 위생 정리 (`.env` 언트래킹, 빌드 산출물 제거, Actions 버전 갱신, lint-staged glob 수정) | ✅                    |
-| 1     | Expo SDK 57 프로젝트 생성 + 히스토리 유지 병합 → **실기기 빌드 성공**                        | 🔶 실기기 확인만 남음 |
-| 2     | 툴체인 (ESLint flat config, Prettier 3, husky 9, commitlint)                                 | ✅                    |
-| 3     | NativeWind 4 전환, 색상 토큰 이전, `TextInput` 재작성                                        | ⬜                    |
-| 4     | expo-router 전환, 지도 도메인에 맞는 화면 구조 재설계                                        | ⬜                    |
-| **5** | **지도 코어 — 클러스터링 성능 측정, 배터리 측정, 권한 UX**                                   | ⬜                    |
-| 6     | 데이터 레이어 (Query / Zustand / MMKV), 오프라인·에러 처리                                   | ⬜                    |
-| 7     | 테스트 (RNTL, Maestro E2E), CI에 lint·typecheck·test 추가                                    | ⬜                    |
-| 8     | Storybook 10 + Chromatic 재구축, 스토리 5개 이상                                             | ⬜                    |
-| 9     | EAS Build/Update, **설치 가능한 빌드 링크 게시**                                             | ⬜                    |
-| 10    | README 재작성 (스크린샷, 측정 결과, 아키텍처)                                                | ⬜                    |
+| Phase | 내용                                                                                         | 상태         |
+| ----- | -------------------------------------------------------------------------------------------- | ------------ |
+| 0     | 레포 위생 정리 (`.env` 언트래킹, 빌드 산출물 제거, Actions 버전 갱신, lint-staged glob 수정) | ✅           |
+| 1     | Expo SDK 57 프로젝트 생성 + 히스토리 유지 병합 → **빌드·실행 확인**                          | ✅ (Android) |
+| 2     | 툴체인 (ESLint flat config, Prettier 3, husky 9, commitlint)                                 | ✅           |
+| 3     | NativeWind 4 전환, 색상 토큰 이전, `TextInput` 재작성                                        | ⬜           |
+| 4     | expo-router 전환, 지도 도메인에 맞는 화면 구조 재설계                                        | ⬜           |
+| **5** | **지도 코어 — 클러스터링 성능 측정, 배터리 측정, 권한 UX**                                   | ⬜           |
+| 6     | 데이터 레이어 (Query / Zustand / MMKV), 오프라인·에러 처리                                   | ⬜           |
+| 7     | 테스트 (RNTL, Maestro E2E), CI에 lint·typecheck·test 추가                                    | ⬜           |
+| 8     | Storybook 10 + Chromatic 재구축, 스토리 5개 이상                                             | ⬜           |
+| 9     | EAS Build/Update, **설치 가능한 빌드 링크 게시**                                             | ⬜           |
+| 10    | README 재작성 (스크린샷, 측정 결과, 아키텍처)                                                | ⬜           |
 
 **Phase 5가 본체입니다.** 나머지는 거기 도달하기 위한 기반 공사입니다.
 
