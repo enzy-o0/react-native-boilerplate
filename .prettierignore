@@ -1,0 +1,16 @@
+# 생성물 / 의존성
+node_modules/
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# CNG로 생성되는 네이티브 폴더
+ios/
+android/
+
+# 락파일
+yarn.lock
+
+# Expo 템플릿 제공 스크립트 (원본 유지)
+scripts/reset-project.js
